@@ -8,10 +8,46 @@ public class PlayerScript : MonoBehaviour {
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
 
+    //speed
+    private Vector2 playerSpeed = new Vector2(5,5);
+
+    Vector2 myScreen;
+    private Vector2 myHalfScreen;
+
+    //movement
+    private Vector2 playerMoveRate;
+    private Vector2 nullMoveRate = new Vector2(0, 0);
+    private Rigidbody2D rigidComponent;
+
+    //height and width of player
+    float objectWidth, objectHeight;
+
+    //get direction keyboard move
+    float inputX;
+
     void Start()
     {
         dragDistance = Screen.height * 15 / 100; //dragDistance is 15% height of the screen
+        
+        //to make object start in the center
+          //full screen dimension
+        myScreen = new Vector2(Screen.width, Screen.height);
+        myScreen = Camera.main.ScreenToWorldPoint(myScreen);
+
+        //half width screen dimension
+        myHalfScreen = new Vector2(Screen.width/2, Screen.height * 0.1f);
+        print("screen " + myHalfScreen.x);
+
+        myHalfScreen = Camera.main.ScreenToWorldPoint(myHalfScreen);
+
+        myHalfScreen = new Vector2(myHalfScreen.x, myHalfScreen.y);
+
+        print("myWorld " + myHalfScreen.x);
+
+        gameObject.transform.position = myHalfScreen;
+
     }
+    
 
     void Update()
     {
@@ -40,10 +76,14 @@ public class PlayerScript : MonoBehaviour {
                         if ((lp.x > fp.x))  //If the movement was to the right)
                         {   //Right swipe
                             Debug.Log("Right Swipe");
+
+                            moveRight();
                         }
                         else
                         {   //Left swipe
                             Debug.Log("Left Swipe");
+
+                            moveLeft();
                         }
                     }
                     else
@@ -64,5 +104,61 @@ public class PlayerScript : MonoBehaviour {
                 }
             }
         }
+
+        //for dirrection buttons
+        inputX = Input.GetAxis("Horizontal");
+
+        directionButtonTester();
+
+
     }
+
+    void FixedUpdate()
+    {
+        
+        //grab the rigid body
+        if (rigidComponent == null) rigidComponent = GetComponent<Rigidbody2D>();
+
+
+        ////make it move
+        rigidComponent.velocity = playerMoveRate;
+
+        Debug.Log(gameObject.transform.position.x);
+
+        Debug.Log(myScreen.x);
+        Debug.Log(objectWidth);
+
+        //prevent from going out of bounds
+        Vector2 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -myScreen.x, myScreen.x);
+        //pos.y = Mathf.Clamp(pos.y, minYPosition, maxYPosition);
+        transform.position = pos;
+
+        //if (gameObject.transform.position.x >= myScreen.x)
+        //{
+        //    rigidComponent.velocity = nullMoveRate;
+        //}
+        //else if (gameObject.transform.position.x < -myScreen.x)
+        //{
+        //    rigidComponent.velocity = nullMoveRate;
+        //}
+    }
+
+
+    private void moveRight()
+    {
+        playerMoveRate = new Vector2(playerSpeed.x, 0);
+    }
+    private void moveLeft()
+    {
+        playerMoveRate = new Vector2(playerSpeed.x * -1, 0);
+    }
+
+
+    private void directionButtonTester()
+    {
+        playerMoveRate = new Vector2(playerSpeed.x * inputX, 0);
+    }
+
+
 }
