@@ -11,12 +11,12 @@ public class PlayerScript : MonoBehaviour {
     //speed
     private Vector2 playerSpeed = new Vector2(5,5);
 
-    Vector2 myScreen;
+    private Vector2 myScreen;
     private Vector2 myHalfScreen;
 
     //movement
     private Vector2 playerMoveRate;
-    private Vector2 nullMoveRate = new Vector2(0, 0);
+   private Vector2 nullMoveRate = new Vector2(0, 0);
     private Rigidbody2D rigidComponent;
 
     //height and width of player
@@ -24,6 +24,15 @@ public class PlayerScript : MonoBehaviour {
 
     //get direction keyboard move
     float inputX;
+
+    //tells when the plaayer is at any time
+    int playerRealTimePosition = 0; //0 for center, 1 for left, 2 for right
+    bool beginSwipe = false;
+    int swipeDirection = 0; //1 for left, 2 for right
+    //bool firstSwipe = true;//true for first swipe, false for continous swipes
+
+    Vector2 nextPlayerPosition;
+
 
     void Start()
     {
@@ -36,7 +45,7 @@ public class PlayerScript : MonoBehaviour {
 
         //half width screen dimension
         myHalfScreen = new Vector2(Screen.width/2, Screen.height * 0.1f);
-        print("screen " + myHalfScreen.x);
+        print("screen " + myScreen.x);
 
         myHalfScreen = Camera.main.ScreenToWorldPoint(myHalfScreen);
 
@@ -46,6 +55,9 @@ public class PlayerScript : MonoBehaviour {
 
         gameObject.transform.position = myHalfScreen;
 
+
+
+        nextPlayerPosition = new Vector2(0,0);
     }
     
 
@@ -73,17 +85,19 @@ public class PlayerScript : MonoBehaviour {
                  //check if the drag is vertical or horizontal
                     if (Mathf.Abs(lp.x - fp.x) > Mathf.Abs(lp.y - fp.y))
                     {   //If the horizontal movement is greater than the vertical movement...
+                        
+
                         if ((lp.x > fp.x))  //If the movement was to the right)
                         {   //Right swipe
                             Debug.Log("Right Swipe");
-
-                            moveRight();
+                                                         
+                            MoveRight();
                         }
                         else
                         {   //Left swipe
                             Debug.Log("Left Swipe");
 
-                            moveLeft();
+                            MoveLeft();
                         }
                     }
                     else
@@ -105,10 +119,17 @@ public class PlayerScript : MonoBehaviour {
             }
         }
 
-        //for dirrection buttons
-        inputX = Input.GetAxis("Horizontal");
 
-        directionButtonTester();
+        //for dirrection buttons
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            MoveLeft();
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            MoveRight();
+        }
+
 
 
     }
@@ -118,46 +139,99 @@ public class PlayerScript : MonoBehaviour {
         
         //grab the rigid body
         if (rigidComponent == null) rigidComponent = GetComponent<Rigidbody2D>();
+        
+            rigidComponent.velocity = playerMoveRate;
+            Vector2 pos = transform.position;
+            pos.x = Mathf.Clamp(pos.x, -myScreen.x, myScreen.x);
+            transform.position=pos;
+
+        
+
+        //Vector2 pos = transform.position;
+        //nextPlayerPosition.x = Mathf.Clamp(nextPlayerPosition.x, -myScreen.x, myScreen.x);
+        //rigidComponent.transform.Translate (nextPlayerPosition);
 
 
-        ////make it move
-        rigidComponent.velocity = playerMoveRate;
 
-        Debug.Log(gameObject.transform.position.x);
+        //
 
-        Debug.Log(myScreen.x);
-        Debug.Log(objectWidth);
-
-        //prevent from going out of bounds
-        Vector2 pos = transform.position;
-        pos.x = Mathf.Clamp(pos.x, -myScreen.x, myScreen.x);
-        //pos.y = Mathf.Clamp(pos.y, minYPosition, maxYPosition);
-        transform.position = pos;
-
-        //if (gameObject.transform.position.x >= myScreen.x)
+        //if (pos.x != 0)
         //{
-        //    rigidComponent.velocity = nullMoveRate;
+        //    ////make it move
+        //    rigidComponent.velocity = playerMoveRate;
+
+        //    //Debug.Log(gameObject.transform.position.x);
+
+        //    //Debug.Log(myScreen.x);
+        //    //Debug.Log(objectWidth);
+
+        //    //prevent from going out of bounds
+
+        //    if (pos.x > 0)
+        //    { playerRealTimePosition = 2; }
+        //    else if (pos.x < 0)
+        //    { playerRealTimePosition = 1; }
+        //    else if (pos.x == 0)
+        //    { playerRealTimePosition = 0; }
+
+        //    if (pos.x != 0 || pos.x != myScreen.x || pos.x != -myScreen.x)
+        //    {
+        //        if (playerRealTimePosition == 2)
+        //        { ; }
+        //        else if (playerRealTimePosition == 1)
+        //        { pos.x = Mathf.Clamp(pos.x, -myScreen.x, 0); }
+        //        else if (playerRealTimePosition == 0)
+        //        {
+        //            pos.x = Mathf.Clamp(pos.x, -myScreen.x, myScreen.x);
+        //        }
+        //    }
+
+        //    
+
         //}
-        //else if (gameObject.transform.position.x < -myScreen.x)
-        //{
-        //    rigidComponent.velocity = nullMoveRate;
-        //}
+
+
+
+
     }
 
 
-    private void moveRight()
+    private void MoveRight()
     {
-        playerMoveRate = new Vector2(playerSpeed.x, 0);
+        swipeDirection = 2;
+        playerMoveRate = new Vector2(playerSpeed.x, 0);//send direction of player movement
+
+       // Vector2 pos = transform.position;
+
+
     }
-    private void moveLeft()
+    private void MoveLeft()
     {
-        playerMoveRate = new Vector2(playerSpeed.x * -1, 0);
+        swipeDirection = 1;
+        playerMoveRate = new Vector2(playerSpeed.x * -1, 0);//send direction of player movement
+
+        //Vector2 pos = transform.position;
+        
+
     }
 
 
-    private void directionButtonTester()
+    private void DirectionButtonTester()
     {
         playerMoveRate = new Vector2(playerSpeed.x * inputX, 0);
+    }
+
+
+    //where player hits rock
+    private void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        smallRock smallRockObject = otherCollider.gameObject.GetComponent<smallRock>();
+
+        if (smallRockObject != null)
+        {
+            Destroy(smallRockObject.gameObject);
+            Destroy(gameObject);
+        }
     }
 
 
