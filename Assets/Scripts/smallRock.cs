@@ -15,7 +15,7 @@ public class smallRock : MonoBehaviour {
         myScreen = new Vector2(Screen.width, Screen.height);
         myScreen = Camera.main.ScreenToWorldPoint(myScreen);
 
-        Debug.Log(myScreen.y);
+        //Debug.Log(myScreen.y);
     }
 	
 	// Update is called once per frame

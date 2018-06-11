@@ -8,6 +8,8 @@ public class PlayerScript : MonoBehaviour {
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
 
+    
+
     //speed
     private Vector2 playerSpeed = new Vector2(5,5);
 
@@ -20,7 +22,8 @@ public class PlayerScript : MonoBehaviour {
     private Rigidbody2D rigidComponent;
 
     //height and width of player
-    float objectWidth, objectHeight;
+    //float objectWidth, objectHeight;
+    Vector2 playerPolygonSize;
 
     //get direction keyboard move
     float inputX;
@@ -29,6 +32,8 @@ public class PlayerScript : MonoBehaviour {
     int playerRealTimePosition = 0; //0 for center, 1 for left, 2 for right
     bool beginSwipe = false;
     int swipeDirection = 0; //1 for left, 2 for right
+
+    float pointAtSwipe;
     //bool firstSwipe = true;//true for first swipe, false for continous swipes
 
     Vector2 nextPlayerPosition;
@@ -45,19 +50,23 @@ public class PlayerScript : MonoBehaviour {
 
         //half width screen dimension
         myHalfScreen = new Vector2(Screen.width/2, Screen.height * 0.1f);
-        print("screen " + myScreen.x);
+        //print("screen " + myScreen.x);
 
         myHalfScreen = Camera.main.ScreenToWorldPoint(myHalfScreen);
 
         myHalfScreen = new Vector2(myHalfScreen.x, myHalfScreen.y);
 
-        print("myWorld " + myHalfScreen.x);
+        //print("myWorld " + myHalfScreen.x);
 
         gameObject.transform.position = myHalfScreen;
 
 
+        //get the size of player game object
+        playerPolygonSize = gameObject.GetComponent<PolygonCollider2D>().bounds.size;
+                
+            
+        
 
-        nextPlayerPosition = new Vector2(0,0);
     }
     
 
@@ -131,6 +140,7 @@ public class PlayerScript : MonoBehaviour {
         }
 
 
+        
 
     }
 
@@ -139,79 +149,66 @@ public class PlayerScript : MonoBehaviour {
         
         //grab the rigid body
         if (rigidComponent == null) rigidComponent = GetComponent<Rigidbody2D>();
+
         
+        Vector2 pos = transform.position;
+
+        
+
+        if (pointAtSwipe < -.5f)
+        {
             rigidComponent.velocity = playerMoveRate;
-            Vector2 pos = transform.position;
-            pos.x = Mathf.Clamp(pos.x, -myScreen.x, myScreen.x);
-            transform.position=pos;
+            pos.x = Mathf.Clamp(pos.x, -myScreen.x+(playerPolygonSize.x/ 2), 0);
+            transform.position = pos;
+            
+        }
+        else if (pointAtSwipe > 0.5f)
+        {
+            rigidComponent.velocity = playerMoveRate;
+            pos.x = Mathf.Clamp(pos.x, 0, myScreen.x - (playerPolygonSize.x / 2));
+            transform.position = pos;
+        }
+        else //zero
+        {
+            if (swipeDirection == 1) //left swipe
+            {
+                rigidComponent.velocity = playerMoveRate;
+                pos.x = Mathf.Clamp(pos.x, -myScreen.x + (playerPolygonSize.x / 2), 0);
+                transform.position = pos;
+            }
+            else if (swipeDirection == 2) //right swipe
+            {
+                rigidComponent.velocity = playerMoveRate;
+                pos.x = Mathf.Clamp(pos.x, 0, myScreen.x - (playerPolygonSize.x / 2));
+                transform.position = pos;
+            }
 
-        
-
-        //Vector2 pos = transform.position;
-        //nextPlayerPosition.x = Mathf.Clamp(nextPlayerPosition.x, -myScreen.x, myScreen.x);
-        //rigidComponent.transform.Translate (nextPlayerPosition);
-
-
-
-        //
-
-        //if (pos.x != 0)
-        //{
-        //    ////make it move
-        //    rigidComponent.velocity = playerMoveRate;
-
-        //    //Debug.Log(gameObject.transform.position.x);
-
-        //    //Debug.Log(myScreen.x);
-        //    //Debug.Log(objectWidth);
-
-        //    //prevent from going out of bounds
-
-        //    if (pos.x > 0)
-        //    { playerRealTimePosition = 2; }
-        //    else if (pos.x < 0)
-        //    { playerRealTimePosition = 1; }
-        //    else if (pos.x == 0)
-        //    { playerRealTimePosition = 0; }
-
-        //    if (pos.x != 0 || pos.x != myScreen.x || pos.x != -myScreen.x)
-        //    {
-        //        if (playerRealTimePosition == 2)
-        //        { ; }
-        //        else if (playerRealTimePosition == 1)
-        //        { pos.x = Mathf.Clamp(pos.x, -myScreen.x, 0); }
-        //        else if (playerRealTimePosition == 0)
-        //        {
-        //            pos.x = Mathf.Clamp(pos.x, -myScreen.x, myScreen.x);
-        //        }
-        //    }
-
-        //    
-
-        //}
+        }
 
 
-
+        //Debug.Log(pos);
 
     }
 
 
     private void MoveRight()
     {
-        swipeDirection = 2;
+        swipeDirection = 2; //2 for right
         playerMoveRate = new Vector2(playerSpeed.x, 0);//send direction of player movement
 
-       // Vector2 pos = transform.position;
+       Vector2 pos = transform.position;
 
+        pointAtSwipe = pos.x;
 
     }
     private void MoveLeft()
     {
-        swipeDirection = 1;
-        playerMoveRate = new Vector2(playerSpeed.x * -1, 0);//send direction of player movement
+        swipeDirection = 1; //1 for left
+        playerMoveRate = new Vector2(-playerSpeed.x , 0);//send direction of player movement
 
-        //Vector2 pos = transform.position;
-        
+        Vector2 pos = transform.position;
+
+        pointAtSwipe = pos.x;
 
     }
 
