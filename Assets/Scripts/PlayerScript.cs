@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -8,10 +9,20 @@ public class PlayerScript : MonoBehaviour {
     private Vector3 lp;   //Last touch position
     private float dragDistance;  //minimum distance for a swipe to be registered
 
-    
+
+    //The Score Object
+    public TextMeshProUGUI PlayerScoreObject;
+    public TextMeshProUGUI FinalScoreObject;
+    private int intPlayerScore;
+
+    //The Lose Menu object
+    public GameObject LoseMenu;
+
+    //The Lose Menu object
+    public GameObject PlayerObject;
 
     //speed
-    private Vector2 playerSpeed = new Vector2(5,5);
+    private Vector2 playerSpeed = new Vector2(10,10);
 
     private Vector2 myScreen;
     private Vector2 myHalfScreen;
@@ -41,7 +52,7 @@ public class PlayerScript : MonoBehaviour {
 
     void Start()
     {
-        dragDistance = Screen.height * 15 / 100; //dragDistance is 15% height of the screen
+        dragDistance = Screen.width * 10 / 100; //dragDistance is 15% height of the screen
         
         //to make object start in the center
           //full screen dimension
@@ -63,10 +74,9 @@ public class PlayerScript : MonoBehaviour {
 
         //get the size of player game object
         playerPolygonSize = gameObject.GetComponent<PolygonCollider2D>().bounds.size;
-                
-            
-        
 
+
+        
     }
     
 
@@ -139,8 +149,9 @@ public class PlayerScript : MonoBehaviour {
             MoveRight();
         }
 
+        //Score Method
+        PlayerScoring();
 
-        
 
     }
 
@@ -148,39 +159,38 @@ public class PlayerScript : MonoBehaviour {
     {
         
         //grab the rigid body
-        if (rigidComponent == null) rigidComponent = GetComponent<Rigidbody2D>();
+        if (rigidComponent == null) rigidComponent = PlayerObject.GetComponent<Rigidbody2D>();
 
         
-        Vector2 pos = transform.position;
-
+        Vector2 pos = PlayerObject.transform.position;
         
-
-        if (pointAtSwipe < -.5f)
+       
+        if (pointAtSwipe < -.5f) //when at left
         {
             rigidComponent.velocity = playerMoveRate;
-            pos.x = Mathf.Clamp(pos.x, -myScreen.x+(playerPolygonSize.x/ 2), 0);
-            transform.position = pos;
+            pos.x = Mathf.Clamp(pos.x, -myScreen.x+(playerPolygonSize.x), 0);
+            PlayerObject.transform.position = pos;
             
         }
-        else if (pointAtSwipe > 0.5f)
+        else if (pointAtSwipe > 0.5f) //when at right
         {
             rigidComponent.velocity = playerMoveRate;
-            pos.x = Mathf.Clamp(pos.x, 0, myScreen.x - (playerPolygonSize.x / 2));
-            transform.position = pos;
+            pos.x = Mathf.Clamp(pos.x, 0, myScreen.x - (playerPolygonSize.x));
+            PlayerObject.transform.position = pos;
         }
-        else //zero
+        else //zero (when center)
         {
             if (swipeDirection == 1) //left swipe
             {
                 rigidComponent.velocity = playerMoveRate;
-                pos.x = Mathf.Clamp(pos.x, -myScreen.x + (playerPolygonSize.x / 2), 0);
-                transform.position = pos;
+                pos.x = Mathf.Clamp(pos.x, -myScreen.x + (playerPolygonSize.x), 0);
+                PlayerObject.transform.position = pos;
             }
             else if (swipeDirection == 2) //right swipe
             {
                 rigidComponent.velocity = playerMoveRate;
-                pos.x = Mathf.Clamp(pos.x, 0, myScreen.x - (playerPolygonSize.x / 2));
-                transform.position = pos;
+                pos.x = Mathf.Clamp(pos.x, 0, myScreen.x - (playerPolygonSize.x));
+                PlayerObject.transform.position = pos;
             }
 
         }
@@ -196,7 +206,7 @@ public class PlayerScript : MonoBehaviour {
         swipeDirection = 2; //2 for right
         playerMoveRate = new Vector2(playerSpeed.x, 0);//send direction of player movement
 
-       Vector2 pos = transform.position;
+       Vector2 pos = PlayerObject.transform.position;
 
         pointAtSwipe = pos.x;
 
@@ -206,7 +216,7 @@ public class PlayerScript : MonoBehaviour {
         swipeDirection = 1; //1 for left
         playerMoveRate = new Vector2(-playerSpeed.x , 0);//send direction of player movement
 
-        Vector2 pos = transform.position;
+        Vector2 pos = PlayerObject.transform.position;
 
         pointAtSwipe = pos.x;
 
@@ -226,10 +236,22 @@ public class PlayerScript : MonoBehaviour {
 
         if (smallRockObject != null)
         {
+            //destroy object rock and player
             Destroy(smallRockObject.gameObject);
-            Destroy(gameObject);
+            Destroy(PlayerObject.gameObject);
+
+            //make lose menu appear
+            LoseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            FinalScoreObject.text = "Your Score is: "+intPlayerScore.ToString();
         }
     }
 
+    private void PlayerScoring()
+    {
+        intPlayerScore += 1;
+        PlayerScoreObject.text = intPlayerScore.ToString();
+    }
+    
 
 }
