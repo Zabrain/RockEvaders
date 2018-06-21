@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -40,6 +41,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 3973907597
+    locked: 0
+  - name: Villagers
+    uniqueID: 2331597581
     locked: 0
   - name: Decorations
     uniqueID: 1612708211
