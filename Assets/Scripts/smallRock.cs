@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class smallRock : MonoBehaviour {
 
+    public GameObject SmallRockObject;
+
     private Rigidbody2D rigidComponent;
 
     private float fallGravity = .3f;
@@ -29,4 +31,8 @@ public class smallRock : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+    
+
+
 }
