@@ -29,7 +29,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void ResumeGame()
     {
-        gamePaused = true;
+        gamePaused = false;
         Time.timeScale = 1f;
     }
 

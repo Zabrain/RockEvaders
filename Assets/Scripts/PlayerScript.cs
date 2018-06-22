@@ -362,7 +362,7 @@ public class PlayerScript : MonoBehaviour {
         //check if bullet is available
         if (availableBullet > 0)
         {
-            GameObject gameObject = (GameObject)Instantiate(BulletPrefab, transform.position, Quaternion.identity);
+            GameObject gameObject = (GameObject)Instantiate(BulletPrefab, new Vector2(transform.position.x, transform.position.y / 1.5f ), Quaternion.identity);
             BulletObjectList.Add(gameObject);
 
             if (availableBullet > 0) //prevent the available bullet variable from going negative
