@@ -64,7 +64,7 @@ public class PlayerScript : MonoBehaviour {
 
     //tells when the plaayer is at any time
     int playerRealTimePosition = 0; //0 for center, 1 for left, 2 for right
-    bool beginSwipe = false;
+    //bool beginSwipe = false;
     int swipeDirection = 0; //1 for left, 2 for right
 
     float pointAtSwipe;
