@@ -6,14 +6,17 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour {
 
     //loads the game scene
-	public void PlayGame()
+    public void PlayGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        if (PlayerPrefs.GetInt("Level_Amount") < 1)
+        {
+            SceneManager.LoadScene("FirstAnimation");
+        }
+        else
+        {
+                SceneManager.LoadScene("SecondAnimation");
+        }
     }
 
-    //quits the game
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
+   
 }

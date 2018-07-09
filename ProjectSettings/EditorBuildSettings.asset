@@ -9,6 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScreen.unity
     guid: 984d10f5bdfd9874598e0b41653c649f
   - enabled: 1
+    path: Assets/Scenes/FirstAnimation.unity
+    guid: a4429fbfa8eb8d040851dc5fbbf3afba
+  - enabled: 1
     path: Assets/Scenes/RockEvaders.unity
     guid: b89b002816002564ea9fe2378ef25dd1
+  - enabled: 1
+    path: Assets/Scenes/SecondAnimation.unity
+    guid: 3829631922b878c4eaafeca358e53931
   m_configObjects: {}

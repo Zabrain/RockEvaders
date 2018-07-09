@@ -28,10 +28,17 @@ public class PowerUps : MonoBehaviour {
 
         //make it fall
         rigidComponent.gravityScale = fallGravity;
+        RotationOfShot();
 
         if (transform.position.y < -myScreen.y)
         {
             Destroy(gameObject);
         }
+    }
+
+    void RotationOfShot()
+    {
+        transform.Rotate(new Vector3(0, 0, 4f));
+        //transform.Rotate(Vector2.right, 45 * Time.deltaTime, Space.World);
     }
 }

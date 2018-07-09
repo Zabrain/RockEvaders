@@ -208,7 +208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SmallRockObject: {fileID: 0}
-  ggfgfff: 0
 --- !u!212 &212806061817598120
 SpriteRenderer:
   m_ObjectHideFlags: 1

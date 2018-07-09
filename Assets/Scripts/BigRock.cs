@@ -15,9 +15,7 @@ public class BigRock : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
-        myScreen = new Vector2(Screen.width, Screen.height);
-        myScreen = Camera.main.ScreenToWorldPoint(myScreen);
+        
 
         //Debug.Log(myScreen.y);
     }
@@ -25,14 +23,6 @@ public class BigRock : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (rigidComponent == null) rigidComponent = GetComponent<Rigidbody2D>();
 
-        //make it fall
-        rigidComponent.gravityScale = fallGravity;
-
-        if (transform.position.y < -myScreen.y)
-        {
-            Destroy(gameObject);
-        }
     }
 }

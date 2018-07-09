@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1419586603808416}
+  m_IsPrefabParent: 1
+--- !u!1 &1419586603808416
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4200334428885322}
+  - component: {fileID: 114821901350712600}
+  m_Layer: 0
+  m_Name: TheAudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4200334428885322
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419586603808416}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.006949663, y: -0.073655605, z: -0.030405065}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114821901350712600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1419586603808416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280aaaba1d96a9945a952f1a5b73e7f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myAudioClipsTheme:
+  - {fileID: 82460089712304618, guid: 24cf2d517aa095b4abaf3b5959d4ab03, type: 2}
+  - {fileID: 82024001829950008, guid: ddc9fa7dbe61977429dc9d6ff0743fd0, type: 2}
+  myAudioClipsSFX:
+  - {fileID: 82197259055743108, guid: 5152bf198a1d2164693af3ff9a7fb2d7, type: 2}
+  - {fileID: 82546351328770938, guid: 1756268559b2ac440a60a5a1c8a6e3ac, type: 2}
+  - {fileID: 82084620781056788, guid: 9138751d2be70314d9a711848c640a52, type: 2}
+  - {fileID: 82568041951400682, guid: d78b139f1922cc44db496913f987af87, type: 2}
+  - {fileID: 82173595349748982, guid: ff81e083f18b24741a9c3e7d343f8eb1, type: 2}
+  - {fileID: 82600103077556528, guid: 2ce48dc497c4fd24fb42ef8d0eaba2ba, type: 2}
+  - {fileID: 82240033082204650, guid: be844cc09754b154e9da6ad4f729b0b1, type: 2}
+  - {fileID: 82154185398309366, guid: 55e838d98a7d0f843b71876c55ce2d6f, type: 2}
+  - {fileID: 82892919203385588, guid: 6107c697b2fc0bb4f83f2f72e138ba77, type: 2}
+  myMusicSlider: {fileID: 0}
+  mySFXSlider: {fileID: 0}
+  stageName: 

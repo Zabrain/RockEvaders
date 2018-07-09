@@ -44,7 +44,9 @@ public class PauseMenu : MonoBehaviour {
         SceneManager.LoadScene("StartScreen");
 
         //MAKE TIME RESUME AFTER GOING BACK TO MAIN MENU
+        gamePaused = false;
         Time.timeScale = 1f;
+
     }
 
     public void RestartGame()

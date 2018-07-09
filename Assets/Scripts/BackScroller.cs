@@ -13,21 +13,21 @@ public class BackScroller : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        startPosition = transform.position;
+        //startPosition = transform.position;
 
-        myScreen = new Vector2(Screen.width, Screen.height);
-        myScreen = Camera.main.ScreenToWorldPoint(myScreen);
+        //myScreen = new Vector2(Screen.width, Screen.height);
+        //myScreen = Camera.main.ScreenToWorldPoint(myScreen);
 
-        scrollSpeed = 4;
-        tileSizeZ = 11;
+        //scrollSpeed = 4;
+        //tileSizeZ = 11;
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-       // Debug.Log(transform.position);
-        float newPosition = Mathf.Repeat(Time.time * scrollSpeed, tileSizeZ);
-        transform.position = startPosition + Vector2.down * newPosition;
+       //// Debug.Log(transform.position);
+       // float newPosition = Mathf.Repeat(Time.time * scrollSpeed, tileSizeZ);
+       // transform.position = startPosition + Vector2.down * newPosition;
 
     }
 }

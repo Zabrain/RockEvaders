@@ -6,34 +6,83 @@ public class VillagerManager : MonoBehaviour {
 
     public PlayerHealth playerHealth;       // Reference to the player's heatlh.
     public GameObject VillagerObject;                // The enemy prefab to be spawned.
+    
 
-    public GameObject BackgroundObject;
-
-    public float spawnTimeForVillager = 3f;
+    private float spawnTimeForVillager = 1f;
     public Transform[] spawnPointsVillager;         // An array of the spawn points this enemy can spawn from.
 
 
+    private GameObject Villager;
+
+    private Vector2 myScreen;
+    
+    public static bool villagerMoving;
+    public static float VillagerCountDown = 0f;
 
     void Start()
     {
-        // Call the Spawn function after a delay of the spawnTime and then continue to call after the same amount of time.
-        InvokeRepeating("SpawnVillager", spawnTimeForVillager, 10f);
+        //full screen dimension
+        myScreen = new Vector2(Screen.width, Screen.height);
+        myScreen = Camera.main.ScreenToWorldPoint(myScreen);
+
+
+        Villager = Instantiate(VillagerObject, spawnPointsVillager[0].position, spawnPointsVillager[0].rotation);
+
+        
     }
 
 
-    void SpawnVillager()
+    
+
+
+    private void Update()
     {
-        //// If the player has no health left...
-        //if (playerHealth.currentHealth <= 0f)
-        //{
-        //    // ... exit the function.
-        //    return;
-        //}
+        if (PauseMenu.gamePaused == true)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            if (Villager != null)
+            {
+                //begin countdown for villager
+                VillagerCountDown += Time.deltaTime;
 
-        // Find a random index between zero and one less than the number of spawn points.
-        int spawnPointIndex = Random.Range(0, spawnPointsVillager.Length);
+                //position the villager at the top and start moving it down if countdown is greater than spawntime
+                if (VillagerCountDown > spawnTimeForVillager && villagerMoving == false)
+                {
+                    if (Villager.transform.position.y > myScreen.y)
+                    {
+                        int spawnPointIndex = Random.Range(0, spawnPointsVillager.Length);
+                        Villager.transform.position = spawnPointsVillager[spawnPointIndex].position;
+                    }
+                    villagerMoving = true;
+                }
 
-        // Create an instance of the enemy prefab at the randomly selected spawn point's position and rotation.
-        Instantiate(VillagerObject, spawnPointsVillager[spawnPointIndex].position, spawnPointsVillager[spawnPointIndex].rotation, BackgroundObject.transform);
+                if (villagerMoving == true)
+                {
+                    Villager.transform.position = new Vector2(Villager.transform.position.x, Villager.transform.position.y - 0.1f);
+                    Villager.transform.Rotate(new Vector3(0, 0, -2f));
+                }
+
+                //instantiate villager countdown timer if villager leaves the sceen
+                if (Villager.transform.position.y < -myScreen.y * 1.5)
+                {
+                    VillagerCountDown = 0f;
+                    villagerMoving = false;
+                    Villager.transform.position = spawnPointsVillager[0].position;
+                }
+
+                //Debug.Log(VillagerCountDown);
+            }
+
+        }
+
+        
     }
+
+
+
 }
+
+
