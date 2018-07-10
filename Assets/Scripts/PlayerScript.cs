@@ -150,6 +150,7 @@ public class PlayerScript : MonoBehaviour {
         else
         {
             //for swiping
+
             if (Input.touchCount == 1) // user is touching the screen with a single touch
             {
 
@@ -167,7 +168,7 @@ public class PlayerScript : MonoBehaviour {
                 //{
                 //    lp = touch.position;
                 //}
-                else if (touch.phase == TouchPhase.Moved) // update the last position based on where they moved
+                else if (touch.phase == TouchPhase.Ended) // update the last position based on where they moved
                 {
                     lp = touch.position;  //last touch position. Ommitted if you use list
 
@@ -193,38 +194,16 @@ public class PlayerScript : MonoBehaviour {
                                 MoveLeft();
                             }
                         }
-                        //else
-                        //{   //the vertical movement is greater than the horizontal movement
-                        //    if (lp.y > fp.y)  //If the movement was up
-                        //    {   //Up swipe
-                        //        Debug.Log("Up Swipe");
-                        //    }
-                        //    else
-                        //    {   //Down swipe
-                        //        Debug.Log("Down Swipe");
-                        //    }
-                        //}
                     }
-                    //else
-                    //{
-                    //    BulletShooter();
-                    //}
-
-                }
-                else if (touch.phase == TouchPhase.Ended && touch.tapCount == 1)
-                {
-                    lp = touch.position;
-
-                    if (lp.x == fp.x)
+                    if (touch.phase == TouchPhase.Ended && fp == lp)
                     {
                         //It's a tap 
                         Debug.Log("Tap");
                         BulletShooter();
-
-                        //tapBegin = false;
                     }
 
                 }
+               
             }
 
             //if (tap)

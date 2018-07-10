@@ -5,18 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
 
-    //loads the game scene
-    public void PlayGame()
+    
+
+    public void PlayNewGame()
     {
-        if (PlayerPrefs.GetInt("Level_Amount") < 1)
-        {
-            SceneManager.LoadScene("FirstAnimation");
-        }
-        else
-        {
-                SceneManager.LoadScene("SecondAnimation");
-        }
+        SceneManager.LoadScene("FirstAnimation");
+
+        //clear all player progress
+        PlayerPrefs.SetInt("Current_Score", 0);
+        PlayerPrefs.SetInt("Villager_Total_Amount", 0);
+        PlayerPrefs.SetInt("Level_Amount", 0);
     }
 
-   
+    public void PlayContinue()
+    {
+        SceneManager.LoadScene("SecondAnimation");
+    }
+
 }
